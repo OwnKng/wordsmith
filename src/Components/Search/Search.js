@@ -1,5 +1,17 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { styles } from './styles.js';
+
+const darkTheme = createMuiTheme({
+    palette: {
+      type: 'dark',
+      primary: {
+          main: 'rgb(227, 87, 96)'
+      } 
+    },
+  });
+  
 
 class Search extends React.Component {
     constructor(props){
@@ -24,9 +36,11 @@ class Search extends React.Component {
     render(){
         return (
             <div>
-                <form onSubmit={(e) => {e.preventDefault(); this.handleSearch()}}>
-                <TextField placeholder="search" onChange={this.updateTerm} />
-                </form>
+                <ThemeProvider theme={darkTheme}>
+                    <form onSubmit={(e) => {e.preventDefault(); this.handleSearch()}}>
+                        <TextField placeholder="Find synonym" onChange={this.updateTerm} inputProps={{ style: styles }}/>
+                    </form>
+                </ThemeProvider>
             </div>
         )
     }

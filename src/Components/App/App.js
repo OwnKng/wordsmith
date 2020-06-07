@@ -3,17 +3,24 @@ import './App.css';
 import SearchWords from '../../utils/SearchWords';
 import Search from '../Search/Search';
 
+import { Results } from '../Results/Results';
+
 class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      words: {}
+      words: {},
+      searched: false
     }
     this.searchWords = this.searchWords.bind(this);
     this.cleanResults = this.cleanResults.bind(this);
   }
 
   searchWords(word){
+    this.setState({
+      words: {}, 
+      searched: true
+    });
     SearchWords.GetWords(word).then((response) => this.cleanResults(response))
   }
 
@@ -42,13 +49,33 @@ class App extends React.Component {
     })
 
   }
+
+  renderResults(){
+    if(this.state.searched){
+      return (
+        <Results words={this.state.words}/>
+      )
+    }
+  }
   
   render(){
     return (
-      <div className="App">
-        <h4>Hello World</h4>
-        <Search getSeachTerm={this.searchWords}/>
-      </div>
+        <div>
+          <div className="header">
+            <h1>Synonymizer</h1>
+          </div>
+          <div className="grid">
+            <div className="searchBox">
+              <Search getSeachTerm={this.searchWords}/>
+            </div>
+            <div>
+              {this.renderResults()}
+            </div>
+          </div>
+          <div className="Footer">
+            <p>Powered by the datamuse API. Built with React</p>
+          </div>
+        </div>
     );
   }
 }
